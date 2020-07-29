@@ -16,4 +16,4 @@ getBM(attributes = c('ensembl_gene_id', 'hgnc_symbol', 'go_id'), filters= 'ensem
 #Blank space test case
 T = "SAMD11"
 getBM(attributes = c('hgnc_symbol', 'go_id'), filters= 'hgnc_symbol', values=T, mart = ensembl)
-#So, those blank tests are literally just part of the particular gene... not sure why but they are
+#So, those blank tests are literally just part of the particular gene... not sure why but they are 

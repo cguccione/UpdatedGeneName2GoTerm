@@ -1,1 +1,1 @@
-# UpdatedGeneName2GoTerm
+# Convert Ensmbl Gene to Go Term

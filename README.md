@@ -1,1 +1,1 @@
-# Convert Ensmbl Gene to Go Term
+# Convert Ensembl Gene to Go Term

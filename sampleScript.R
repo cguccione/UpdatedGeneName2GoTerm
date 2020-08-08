@@ -17,3 +17,16 @@ getBM(attributes = c('ensembl_gene_id', 'hgnc_symbol', 'go_id'), filters= 'ensem
 T = "SAMD11"
 getBM(attributes = c('hgnc_symbol', 'go_id'), filters= 'hgnc_symbol', values=T, mart = ensembl)
 #So, those blank tests are literally just part of the particular gene... not sure why but they are 
+
+#GetBM returns a data frame, but we want the format in a list. So, trying to switch over to that format
+test = "ENSG00000187961"
+go.df = getBM(attributes = 'go_id', filters= 'ensembl_gene_id', values=test , mart = ensembl)
+#go.vector <- as.vector(as.data.frame(t(go.df)))
+go.vector <- as.vector(t(go.df))
+go.df
+go.vector
+
+
+d <- data.frame(id=1:2, name=c("Jon", "Mark"))
+d$children <-  list(c("Mary", "James"), c("Greta", "Sally"))
+d

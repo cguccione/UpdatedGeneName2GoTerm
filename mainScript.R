@@ -17,7 +17,7 @@ library(data.table)
 
 contig_goTerm <- data.frame(contig=character(), goTerm = list()) #Create an empty data table
 
-n = 8 #This will eventally be changed to the length of the file, but for now leave it at 10
+n = 6 #This will eventally be changed to the length of the file, but for now leave it at 10
 for(i in 1:n){
   #print(fullFile[i,2]) #This prints only the ENS/intron section
   #print(fullFile[i,]) #This prints the enitre line for columns 1-10
@@ -27,18 +27,31 @@ for(i in 1:n){
   ENS= fullFile[i,2]
   
   #Translates the ENS term to a go term
-  go.df = getBM(attributes = 'go_id', filters= 'ensembl_gene_id', values=ENS, mart = ensembl)
+  go_df = getBM(attributes = 'go_id', filters= 'ensembl_gene_id', values=ENS, mart = ensembl)
   
-  #Places the goTerms into a Vector 
-  go.list <- as.list(as.data.frame(t(go.df)))
+  #print("--------------------------------------------------------------------")
+  #print(nrow(go_df))
   
+  go_list <- split(go_df, seq(nrow(go_df)))#Places the goTerms into a List 
+  
+  # print("go_df")
+  # print(go_df)
+  # print("goList")
+  # print(go_list)
+  # print("Length of list")
+  # print(length(go_list))
   
   #Appends the current contig/goTerm onto the dataFrame
-  TEMP_contig_goTerm<-data.frame(contig, "NA")
-  names(TEMP_contig_goTerm)<-c("contig", "goTerm")
-  contig_goTerm <- rbind(contig_goTerm, TEMP_contig_goTerm)
   
-  contig_goTerm$goTerm <- list(go.list)
+  #Creates a one line dataframe with just the contig 
+  TEMP_contig_goTerm<-data.frame(contig, "NA") #Creates a contig with a NA goTerm 
+  names(TEMP_contig_goTerm)<-c("contig", "goTerm") #Names the datatable the appropriate headings
+  
+  if (nrow(go_df) != 0) #Has to check and make sure dataFrame is not empty
+    #contig_goTerm$goTerm <- list(go_list) #Changes the 'goTerm' part of the dataframe contig_goTerm, 
+    TEMP_contig_goTerm$goTerm <- list(go_list) #Changes the 'goTerm' part of the dataframe contig_goTerm, 
+  
+  contig_goTerm <- rbind(contig_goTerm, TEMP_contig_goTerm)#Appends the new contig to the current dataFrame
   
   print(contig_goTerm)
 }

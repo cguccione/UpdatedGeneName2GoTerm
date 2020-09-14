@@ -55,12 +55,12 @@ fullFile <- read.table("C:\\Users\\cgucc\\Downloads\\Schwartz Labs\\Summer20\\co
 
 #****Create Inital Variables***
 contig_goTerm <- data.frame(contig=character(), goTerm = list()) #Create an empty data table, will eventally hold clean dataset
-n = 1000 #This will eventally be changed to the length of the file, but for now leave it at 10
+n = 772220 #This will eventally be changed to the length of the file, but for now leave it at 10
   # Rember that if you want to test intergenic, you need to go to at least 50, jk only 20
 
 #****Remove all contigs which are have just a 'integenic' region since we don't want them***
-#for(i in 1:n){  
-for(i in 650:800){ #This is is helpful when trying to test combing two contigs with goTerms
+for(i in 1:n){  
+#for(i in 650:800){ #This is is helpful when trying to test combing two contigs with goTerms
   #*** Main Loop, for every row in dataset:
     #- For all contigs with no ENS label, instead say 'intergenic'[don't occur until ~line 50] - set GoTerms as 'NA_I'
     #- Changes the ENS term to a list of goTerms

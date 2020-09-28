@@ -1,5 +1,8 @@
 #---------------------------------------------------------------------------------------
 #Caitlin Guccione 8/31/20
+#THIS IS NO LONGER UP TO DATE- switched over to goTest.R 
+#This version used 'NA_I' for intergenic regions 
+
 #Inporting data from bluewaves
 #Previosly scp to local computer now, pulling here
 #Data has been processed using awk so that it went from 
@@ -57,6 +60,7 @@ fullFile <- read.table("C:\\Users\\cgucc\\Downloads\\Schwartz Labs\\Summer20\\co
 contig_goTerm <- data.frame(contig=character(), goTerm = list()) #Create an empty data table, will eventally hold clean dataset
 n = 772220 #This will eventally be changed to the length of the file, but for now leave it at 10
   # Rember that if you want to test intergenic, you need to go to at least 50, jk only 20
+n =10 #Set this to test the head of the file
 
 #****Remove all contigs which are have just a 'integenic' region since we don't want them***
 for(i in 1:n){  

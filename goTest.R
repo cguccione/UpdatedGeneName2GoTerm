@@ -1,15 +1,20 @@
 #---------------------------------------------------------------------------------------
-#Caitlin Guccione 8/31/20
+#Caitlin Guccione 9/14/20
+#Current Version as of 9/27/2020
+
+#Similar to mainScript.R but without NA_I for intergenic and with duplicates removes 
+
 #Inporting data from bluewaves
-#Previosly scp to local computer now, pulling here
 #Data has been processed using awk so that it went from 
 #correctedOrder.out
 # 1       932028  932182  SISRS_contig-3899000133 3       1       923927  944581  ENSG00000187634_gene    1000    +   
 #To the the form we will input here:
-#correctedOreder.out.awk (mini version in correctedOrder.out.awk.head)
 # contig-3899000133 ENSG00000187634  
-#Also note that there are no repeat SISRS contigs in this dataset, there may be repated GoTerms --- uhhh idk what I'm saying here they are 100% repated contigs... 
-#Now, reapted contigs have been combined
+
+#Current file can be found on bluewaves: 
+#correctedOreder.out.awk (mini version in correctedOrder.out.awk.head)
+#Both files can be found in: /home/cguccione/Summer20/SISRS_annotations/correctedOrder.out.awk
+
 #---------------------------------------------------------------------------------------
 
 #****Import libs & datasets***
@@ -18,13 +23,12 @@ fullFile <- read.table("C:\\Users\\cgucc\\Downloads\\Schwartz Labs\\Summer20\\co
 
 #****Create Inital Variables***
 contig_goTerm <- data.frame(contig=character(), goTerm = list()) #Create an empty data table, will eventally hold clean dataset
-n = 772220 #This will eventally be changed to the length of the file, but for now leave it at 10
-# Rember that if you want to test intergenic, you need to go to at least 50, jk only 20
-n =10 #Set this to test the head of the file
+n = 772220 #Length of file, was hard coded for testing purposes 
+# Rember that if you want to test intergenic, you need to go to at least 20
 
 #****Remove all contigs which are have just a 'integenic' region since we don't want them***
-#for(i in 1:n){  
-for(i in 715:725){ #This is is helpful when trying to test combing two contigs with goTerms
+#for(i in 715:725){ #This is is helpful when trying to test combing two contigs with goTerms
+for(i in 1:n){  
   #*** Main Loop, for every row in dataset:
   #- For all contigs with no ENS label, instead say 'intergenic'[don't occur until ~line 50] - set GoTerms as 'NA'
   #- Changes the ENS term to a list of goTerms
@@ -69,15 +73,9 @@ for(i in 715:725){ #This is is helpful when trying to test combing two contigs w
     #To acess the goTerm associated with the matching contig, we can use RC[1,1], which contains the row number
     current_goList = contig_goTerm[RC[1,1], "goTerm"] #Pulls the current goList for that contig
     
-    print("Current_go")
-    print(current_goList)
-    
-    print("go list")
-    print(go_list)
     
     #*Need to see what kind of goTerm is currently in contig
     if (current_goList == "NA"){#This has no information, so regardless of what our new goTerm is, we will replace it
-      print("here")
       
       ##!! This would be simple but doesn't work contig_goTerm[RC[1,1], "goTerm"] <- list(go_list)
       #!!It doesn't work for the same reason as above, you are trying to add a list so you must do it another way
@@ -107,7 +105,18 @@ for(i in 715:725){ #This is is helpful when trying to test combing two contigs w
     }
     #OTHERWISE, it  means that go_list = NA and current_goList != NA, so we can just keep whatever is in current_goList
   }
+  #This print only works for the first 500 or so lines and then it maxes out on what it can print
+  #IF you can fix this and output it as a .csv then you could easily push directly into machine learning script  
+  cat(capture.output(print(contig_goTerm), file="updated.csv")) 
 } 
-print(contig_goTerm)
 
-cat(capture.output(print(contig_goTerm), file="test.csv"))
+#Useful for testing, contig_goTerm is our final datatable 
+#print(contig_goTerm)
+
+#If not done just run this last line and whatever is done will be put in  file
+#Once again, the file can't print anything larger than about 500 lines 
+cat(capture.output(print(contig_goTerm), file="finalOutput.csv"))
+
+#OTHER ISSUES:
+#The database we are pulling from eventally kicks us off so could only get through about 1/3 of the data
+#If you can also find a way to put contig_goTerm into a dataframe that skilearn can easily read, then that may help as well

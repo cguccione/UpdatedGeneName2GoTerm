@@ -30,3 +30,26 @@ go.vector
 d <- data.frame(id=1:2, name=c("Jon", "Mark"))
 d$children <-  list(c("Mary", "James"), c("Greta", "Sally"))
 d
+
+
+#**Learning how to use hash
+
+test_hash <- hash() #Creates our hash, stores contigs and thier corresponding values
+# set values
+test_hash[["1"]] <- 42
+test_hash[["foo"]] <- "bar"
+test_hash[["4"]] <- list(a=1, b=2)
+doesThisWork <- list(a=3, b=4)
+test_hash[["5"]] <- doesThisWork
+# get values
+test_hash[["1"]]
+## [1] 42
+test_hash[["4"]]
+test_hash[["5"]]
+test_hash[c("1", "foo")]
+## <hash> containing 2 key-value pair(s).
+##   1 : 42
+##   foo : bar
+test_hash[["key not here"]]
+## NULL
+#More info: https://stackoverflow.com/questions/7818970/is-there-a-dictionary-functionality-in-r/44570412 
